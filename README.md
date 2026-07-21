@@ -33,12 +33,7 @@ O script usa três técnicas principais:
 
 1. **Interceptação de eventos** — bloqueia `contextmenu`, `copy`, `cut`, `selectstart` e `dragstart`
 2. **Injeção de CSS** — sobrescreve propriedades `user-select` e `cursor` com `!important`
-3. **MutationObserver** — monitora mudanças no DOM para aplicar correções em conteúdo dinâmico
-
-## Links
-
-- [GreasyFork](https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy)
-- [GitHub](https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey)
+3. **MutationObserver** — monitora mudanças no DOM para aplicar correções em conteúdo dinâmico.
 
 ## Licença
 
