@@ -6,12 +6,16 @@ Baseado na extensão Firefox [Absolute Enable Right Click](https://addons.mozill
 
 ## Instalação
 
-1. Instale o [Violentmonkey](https://violentmonkey.github.io/) ou [Tampermonkey](https://www.tampermonkey.net/) no seu navegador
-2. Clique em "Criar novo script"
-3. Cole o conteúdo do arquivo `absolute-enable-right-click.user.js`
-4. Salve
+[![GreasyFork](https://img.shields.io/badge/GreasyFork-Instalar-FF6700?style=for-the-badge&logo=greasyfork&logoColor=white)](https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy)
 
-Ou baixe diretamente do [GreasyFork](https://greasyfork.org/pt-BR/users/1301195-luciano-inf).
+1. Instale o [Violentmonkey](https://violentmonkey.github.io/) ou [Tampermonkey](https://www.tampermonkey.net/) no seu navegador
+2. Clique no botão "Instalar" acima ou acesse a página do script no [GreasyFork](https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy)
+3. Confirme a instalação
+
+Ou importe diretamente via URL raw:
+```
+https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/absolute-enable-right-click.user.js
+```
 
 ## Funcionalidades
 
@@ -30,6 +34,11 @@ O script usa três técnicas principais:
 1. **Interceptação de eventos** — bloqueia `contextmenu`, `copy`, `cut`, `selectstart` e `dragstart`
 2. **Injeção de CSS** — sobrescreve propriedades `user-select` e `cursor` com `!important`
 3. **MutationObserver** — monitora mudanças no DOM para aplicar correções em conteúdo dinâmico
+
+## Links
+
+- [GreasyFork](https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy)
+- [GitHub](https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey)
 
 ## Licença
 

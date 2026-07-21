@@ -10,7 +10,7 @@
 // @grant        none
 // @match        *://*/*
 // @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/icon.svg
-// @supportURL   https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey/issues
+// @supportURL   https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy
 // @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey
 // @description Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
 // @description:en Enable right click and copy on any website, removing selection and context menu protections.
