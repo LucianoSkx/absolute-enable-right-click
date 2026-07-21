@@ -3,31 +3,104 @@
 // @name:en      Absolute Enable Right Click & Copy
 // @name:pt-BR   Absolute Enable Right Click & Copy
 // @namespace    https://greasyfork.org/pt-BR/users/1301195-luciano-inf
-// @version      1.0
+// @version      2.0
 // @author       Luciano.Oliveirals
 // @license      MIT
 // @run-at       document-body
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_registerMenuCommand
+// @grant        GM_notification
 // @match        *://*/*
 // @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/icon.svg
 // @supportURL   https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy
 // @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey
-// @description Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
-// @description:en Enable right click and copy on any website, removing selection and context menu protections.
-// @description:pt-BR Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
+// @description Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto. Use o atalho Ctrl+Shift+R para alternar.
+// @description:en Enable right click and copy on any website, removing selection and context menu protections. Use Ctrl+Shift+R to toggle.
+// @description:pt-BR Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto. Use Ctrl+Shift+R para alternar.
 // ==/UserScript==
 
 (function() {
     'use strict';
 
+    const STORAGE_KEY = 'isEnabled';
+    const DEFAULT_ENABLED = true;
+
+    let isEnabled = GM_getValue(STORAGE_KEY, DEFAULT_ENABLED);
+
+    function setIsEnabled(value) {
+        isEnabled = value;
+        GM_setValue(STORAGE_KEY, isEnabled);
+        GM_notification({
+            text: isEnabled
+                ? 'Absolute Enable Right Click: ATIVADO'
+                : 'Absolute Enable Right Click: DESATIVADO',
+            timeout: 1500
+        });
+    }
+
+    function toggle() {
+        setIsEnabled(!isEnabled);
+        if (isEnabled) {
+            applyAll();
+        } else {
+            removeAll();
+        }
+    }
+
+    GM_registerMenuCommand('✅ Ativar script', () => setIsEnabled(true) && applyAll());
+    GM_registerMenuCommand('❌ Desativar script', () => setIsEnabled(false) && removeAll());
+    GM_registerMenuCommand('🔄 Alternar ativação', () => toggle());
+
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'r') {
+            e.preventDefault();
+            toggle();
+        }
+    }, true);
+
     /* =============================================
-       Force enable right-click globally
+       State management
+       ============================================= */
+    const state = {
+        styleElements: [],
+        observer: null,
+        eventListeners: []
+    };
+
+    function createStyle(cssText) {
+        const style = document.createElement('style');
+        style.textContent = cssText;
+        document.head.appendChild(style);
+        state.styleElements.push(style);
+        return style;
+    }
+
+    function removeStyles() {
+        state.styleElements.forEach(function(style) {
+            if (style.parentNode) {
+                style.parentNode.removeChild(style);
+            }
+        });
+        state.styleElements = [];
+    }
+
+    function removeObserver() {
+        if (state.observer) {
+            state.observer.disconnect();
+            state.observer = null;
+        }
+    }
+
+    /* =============================================
+       Enable right-click
        ============================================= */
     function enableRightClick() {
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
+        function onContextMenu(e) {
             e.stopPropagation();
-        }, true);
+        }
+        document.addEventListener('contextmenu', onContextMenu, true);
+        state.eventListeners.push({ type: 'contextmenu', listener: onContextMenu });
 
         var protectedElements = document.querySelectorAll(
             '.no-right-click, [data-no-right-click], [oncontextmenu]'
@@ -44,8 +117,7 @@
         document.body.style.msUserSelect = 'text';
         document.body.style.userSelect = 'text';
 
-        var overrideStyle = document.createElement('style');
-        overrideStyle.textContent =
+        createStyle(
             '* {' +
             '  user-select: text !important;' +
             '  -webkit-user-select: text !important;' +
@@ -53,31 +125,34 @@
             '  -ms-user-select: text !important;' +
             '  cursor: text !important;' +
             '  pointer-events: auto !important;' +
-            '}';
-        document.head.appendChild(overrideStyle);
+            '}'
+        );
     }
 
     /* =============================================
-       Force enable copy
+       Enable copy
        ============================================= */
     function enableCopy() {
-        document.addEventListener('copy', function(e) {
+        function onCopy(e) {
             var selection = window.getSelection();
             if (selection && selection.toString().trim().length > 0) {
-                if (e.preventDefault) e.preventDefault();
-                if (e.stopPropagation) e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 return false;
             }
-        }, true);
-
-        document.addEventListener('cut', function(e) {
+        }
+        function onCut(e) {
             var selection = window.getSelection();
             if (selection && selection.toString().trim().length > 0) {
-                if (e.preventDefault) e.preventDefault();
-                if (e.stopPropagation) e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 return false;
             }
-        }, true);
+        }
+        document.addEventListener('copy', onCopy, true);
+        document.addEventListener('cut', onCut, true);
+        state.eventListeners.push({ type: 'copy', listener: onCopy });
+        state.eventListeners.push({ type: 'cut', listener: onCut });
     }
 
     /* =============================================
@@ -109,12 +184,11 @@
        Remove drag & drop restrictions
        ============================================= */
     function removeDragRestrictions() {
-        document.addEventListener('dragstart', function(e) {
+        function onDragStart(e) {
             e.preventDefault();
             e.stopPropagation();
-        }, true);
-
-        document.addEventListener('selectstart', function(e) {
+        }
+        function onSelectStart(e) {
             var target = e.target;
             while (target && target.nodeType === 1) {
                 var style = window.getComputedStyle(target);
@@ -126,15 +200,18 @@
                 }
                 target = target.parentElement;
             }
-        }, true);
+        }
+        document.addEventListener('dragstart', onDragStart, true);
+        document.addEventListener('selectstart', onSelectStart, true);
+        state.eventListeners.push({ type: 'dragstart', listener: onDragStart });
+        state.eventListeners.push({ type: 'selectstart', listener: onSelectStart });
     }
 
     /* =============================================
        Remove common anti-copy CSS classes
        ============================================= */
     function removeAntiCopyCSS() {
-        var style = document.createElement('style');
-        style.textContent =
+        createStyle(
             '.noselect, .no-select, .noCopy, .no-copy, .unselectable, ' +
             '.disable-select, .disableCopy, .disable-copy, ' +
             '[unselectable="on"], [data-selectable="false"], ' +
@@ -145,21 +222,15 @@
             '  -ms-user-select: text !important;' +
             '  pointer-events: auto !important;' +
             '  cursor: text !important;' +
-            '}';
-        document.head.appendChild(style);
+            '}'
+        );
     }
 
     /* =============================================
-       Initialization
+       MutationObserver for dynamic content
        ============================================= */
-    function init() {
-        enableRightClick();
-        enableCopy();
-        removeCopyProtectionMessages();
-        removeDragRestrictions();
-        removeAntiCopyCSS();
-
-        var mutationObserver = new MutationObserver(function(mutations) {
+    function startObserver() {
+        state.observer = new MutationObserver(function(mutations) {
             for (var i = 0; i < mutations.length; i++) {
                 var addedNodes = mutations[i].addedNodes;
                 for (var j = 0; j < addedNodes.length; j++) {
@@ -179,12 +250,39 @@
             }
         });
 
-        mutationObserver.observe(document.body, {
+        state.observer.observe(document.body, {
             childList: true,
             subtree: true,
             attributes: true,
             attributeFilter: ['class', 'style', 'data-no-select', 'oncontextmenu']
         });
+    }
+
+    /* =============================================
+       Apply / Remove all protections
+       ============================================= */
+    function applyAll() {
+        removeCopyProtectionMessages();
+        enableRightClick();
+        enableCopy();
+        removeDragRestrictions();
+        removeAntiCopyCSS();
+        startObserver();
+    }
+
+    function removeAll() {
+        removeStyles();
+        removeObserver();
+        state.eventListeners = [];
+    }
+
+    /* =============================================
+       Initialization
+       ============================================= */
+    function init() {
+        if (isEnabled) {
+            applyAll();
+        }
     }
 
     if (document.readyState === 'loading') {
