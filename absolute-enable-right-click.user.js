@@ -3,7 +3,7 @@
 // @name:en      Absolute Enable Right Click & Copy
 // @name:pt-BR   Absolute Enable Right Click & Copy
 // @namespace    https://greasyfork.org/pt-BR/users/1301195-luciano-inf
-// @version      2.0
+// @version      2.1
 // @author       Luciano.Oliveirals
 // @license      MIT
 // @run-at       document-body
@@ -37,19 +37,15 @@
                 : 'Absolute Enable Right Click: DESATIVADO',
             timeout: 1500
         });
+        location.reload();
     }
 
     function toggle() {
         setIsEnabled(!isEnabled);
-        if (isEnabled) {
-            applyAll();
-        } else {
-            removeAll();
-        }
     }
 
-    GM_registerMenuCommand('✅ Ativar script', () => setIsEnabled(true) && applyAll());
-    GM_registerMenuCommand('❌ Desativar script', () => setIsEnabled(false) && removeAll());
+    GM_registerMenuCommand('✅ Ativar script', () => setIsEnabled(true));
+    GM_registerMenuCommand('❌ Desativar script', () => setIsEnabled(false));
     GM_registerMenuCommand('🔄 Alternar ativação', () => toggle());
 
     document.addEventListener('keydown', function(e) {
@@ -268,12 +264,6 @@
         removeDragRestrictions();
         removeAntiCopyCSS();
         startObserver();
-    }
-
-    function removeAll() {
-        removeStyles();
-        removeObserver();
-        state.eventListeners = [];
     }
 
     /* =============================================
