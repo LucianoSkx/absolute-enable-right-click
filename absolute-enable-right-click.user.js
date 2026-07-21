@@ -10,32 +10,15 @@
 // @grant        none
 // @match        *://*/*
 // @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/icon.svg
-// @supportURL   https://greasyfork.org/scripts/??
+// @supportURL   https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey/issues
 // @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey
+// @description  Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
+// @description:en  Enable right click and copy on any website, removing selection and context menu protections.
+// @description:pt-BR  Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
 // ==/UserScript==
-
-// @description  Violentmonkey/Greasemonkey userscript para ativar clique direito e copiar
-//               em todos os sites, removendo proteções de cópia de texto implementadas por
-//               websites que bloqueiam o menu de contexto e operações de copiar/selecionar.
-// @description:en Violentmonkey/Greasemonkey userscript to enable right click and copy
-//                 on all sites, removing text copy protections implemented by
-//                 websites that block context menu and copy/select operations.
-// @description:pt-BR Violentmonkey/Greasemonkey userscript para ativar clique direito e copiar
-//                 em todos os sites, removendo proteções de cópia de texto implementadas por
-//                 websites que bloqueiam o menu de contexto e operações de copiar/selecionar.
 
 (function() {
     'use strict';
-
-    /* =============================================
-       Fetch / XHR Interceptor — remove protections
-       ============================================= */
-    function inject(fn) {
-        var el = document.createElement('script');
-        el.textContent = '(' + fn.toString() + ')();';
-        document.documentElement.appendChild(el);
-        el.remove();
-    }
 
     /* =============================================
        Force enable right-click globally
