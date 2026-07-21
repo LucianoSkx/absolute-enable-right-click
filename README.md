@@ -26,6 +26,27 @@ https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violent
 - Remove classes CSS anti-cópia (`noselect`, `no-select`, `unselectable`, etc.)
 - Funciona com conteúdo dinâmico (SPA, AJAX)
 - Suporta todos os sites (`*://*/*`)
+- **Ativa/desativa pelo painel do ViolentMonkey** — use os comandos do menu do script
+- **Atalho de teclado** — `Ctrl+Shift+R` para alternar rapidamente
+
+## Como ativar/desativar
+
+O script pode ser ativado e desativado de três formas:
+
+### 1. Pelo painel do ViolentMonkey (recomendado)
+
+Clique no ícone do ViolentMonkey na barra de extensões → encontre o script → clique nos **três pontos** → escolha:
+- **✅ Ativar script** — ativa todas as proteções
+- **❌ Desativar script** — remove todas as proteções e limpa o DOM
+- **🔄 Alternar ativação** — inverte o estado atual
+
+### 2. Atalho de teclado
+
+Pressione `Ctrl+Shift+R` em qualquer página para alternar o script ligado/desligado. Uma notificação aparecerá confirmando a ação.
+
+### 3. Estado persistente
+
+O estado (ativado/desativado) é salvo automaticamente e persiste entre recarregamentos de página e navegações.
 
 ## Como funciona
 
