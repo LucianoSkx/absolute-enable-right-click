@@ -12,9 +12,9 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_notification
 // @match        *://*/*
-// @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/icon.svg
+// @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click/main/icon.svg
 // @supportURL   https://greasyfork.org/pt-BR/scripts/588000-absolute-enable-right-click-copy
-// @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey
+// @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click
 // @description Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto. Use o atalho Ctrl+Shift+R para alternar.
 // @description:en Enable right click and copy on any website, removing selection and context menu protections. Use Ctrl+Shift+R to toggle.
 // @description:pt-BR Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto. Use Ctrl+Shift+R para alternar.
