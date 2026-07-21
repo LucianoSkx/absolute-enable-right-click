@@ -12,9 +12,9 @@
 // @icon         https://raw.githubusercontent.com/LucianoSkx/absolute-enable-right-click-violentmonkey/main/icon.svg
 // @supportURL   https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey/issues
 // @homepageURL  https://github.com/LucianoSkx/absolute-enable-right-click-violentmonkey
-// @description  Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
-// @description:en  Enable right click and copy on any website, removing selection and context menu protections.
-// @description:pt-BR  Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
+// @description Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
+// @description:en Enable right click and copy on any website, removing selection and context menu protections.
+// @description:pt-BR Ativa clique direito e cópia em qualquer site, removendo proteções de seleção e menu de contexto.
 // ==/UserScript==
 
 (function() {
